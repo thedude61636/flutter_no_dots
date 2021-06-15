@@ -74,7 +74,10 @@ class MyApp extends StatelessWidget {
       title: "بدون نقاط",
       theme: ThemeData(
           primarySwatch: Colors.blue, textTheme: GoogleFonts.cairoTextTheme()),
-      home: MyHomePage(),
+      home: Directionality(
+        textDirection: TextDirection.rtl,
+        child: MyHomePage(),
+      ),
     );
   }
 }
