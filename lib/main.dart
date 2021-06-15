@@ -129,6 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(24.0),
               child: TextField(
                 expands: true,
+                onChanged: (value) {
+                  noDotsController.text = removeDots(noDotsController.text);
+                },
                 style: TextStyle(fontSize: 32),
                 minLines: null,
                 maxLines: null,
