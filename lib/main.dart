@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -15,6 +16,7 @@ var letterList = [
   "ً",
   "ْ",
   "آ",
+  "إ",
   "أ",
   "ض",
   "ث",
@@ -22,6 +24,7 @@ var letterList = [
   "ف",
   "غ",
   "خ",
+  "چ",
   "ج",
   "ش",
   "ي",
@@ -46,11 +49,13 @@ var replacement = [
   "",
   "ا",
   "ا",
+  "ا",
   "ص",
   "ٮ",
   "ٯ",
   "ڡ",
   "ع",
+  "ح",
   "ح",
   "ح",
   "س",
@@ -73,7 +78,12 @@ class MyApp extends StatelessWidget {
       locale: Locale('ar'),
       title: "بدون نقاط",
       theme: ThemeData(
-          primarySwatch: Colors.blue, textTheme: GoogleFonts.cairoTextTheme()),
+        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.cairoTextTheme(),
+        snackBarTheme: SnackBarThemeData(
+          contentTextStyle: GoogleFonts.cairo().copyWith(color: Colors.white),
+        ),
+      ),
       home: Directionality(
         textDirection: TextDirection.rtl,
         child: MyHomePage(),
@@ -127,18 +137,36 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: TextField(
-                expands: true,
-                onChanged: (value) {
-                  noDotsController.text = removeDots(noDotsController.text);
-                },
-                style: TextStyle(fontSize: 32),
-                minLines: null,
-                maxLines: null,
-                controller: noDotsController,
-                decoration: InputDecoration(
-                    hintText: "عرٮى ٮدوں ںٯاط", border: OutlineInputBorder()),
-              ),
+              child: Builder(builder: (context) {
+                return InkWell(
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("ٮم الںسح الى الحاڡطه"),
+                    ));
+                    Clipboard.setData(
+                        ClipboardData(text: noDotsController.text));
+                  },
+                  child: TextField(
+                    expands: true,
+                    enabled: false,
+                    minLines: null,
+                    maxLines: null,
+                    controller: noDotsController,
+                    decoration: InputDecoration(
+                        hintText: "عرٮى ٮدوں ںٯاط",
+                        suffix: Column(
+                          children: [
+                            Icon(
+                              Icons.copy,
+                              color: Colors.grey[400],
+                            ),
+                            Text("اصعط\nللںسح"),
+                          ],
+                        ),
+                        border: OutlineInputBorder()),
+                  ),
+                );
+              }),
             )),
           ],
         ),
